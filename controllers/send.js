@@ -1,14 +1,24 @@
+/* eslint-disable quotes */
+import sendEmail from "../utils/sendGrid.js";
+
 export const postSend = async (req, res, next) => {
   try {
-    const { name } = req.body;
-    if (!name) {
-      const error = new Error("Name is Required.");
+    const { email, subject } = req.body;
+    if (!email || !subject) {
+      const error = new Error("email and Subject is Required.");
       error.statusCode = 422;
       throw error;
     }
+    const options = {
+      to: email,
+      from: process.env.FROM,
+      subject,
+      html: `<h1>You successfully signed up!</h1>`,
+    };
+    await sendEmail(options);
     res.status(200).json({
       success: true,
-      name,
+      message: "Your email has been sent successfully",
     });
   } catch (error) {
     if (!error.statusCode) {
