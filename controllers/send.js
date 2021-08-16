@@ -6,7 +6,7 @@ export const postSend = async (req, res, next) => {
       error.statusCode = 422;
       throw error;
     }
-    res.statusCode(200).json({
+    res.status(200).json({
       success: true,
       name,
     });
